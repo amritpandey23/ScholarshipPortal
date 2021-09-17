@@ -1,0 +1,4 @@
+{
+    "app_secret" : "4740597831d388a8cec6b2e78ff3cec6",
+    "db_uri" : "sqlite:///site.db"
+}
