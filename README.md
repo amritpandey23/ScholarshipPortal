@@ -1,4 +1,5 @@
 # Group 27
 
-Participants Names : Amrit Pandey
+Collaborators : { Amrit Pandey }
+
 Problem Statement : WS3
