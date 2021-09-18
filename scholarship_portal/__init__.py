@@ -16,6 +16,4 @@ bcrypt = Bcrypt(app)
 
 db = SQLAlchemy(app)
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    return "Hello World"
+import scholarship_portal.routes

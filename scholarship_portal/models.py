@@ -47,6 +47,7 @@ class Scholarship(db.Model):
     description = db.Column(db.Text, nullable=False)
     caste = db.Column(db.String(15), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
+    program = db.Column(db.String(10), nullable=False)
     department = db.Column(db.String(10), nullable=False)
     required_cgpa = db.Column(db.Float)
     external_link = db.Column(db.String(240))
