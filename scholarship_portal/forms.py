@@ -98,6 +98,5 @@ class StudentLoginForm(FlaskForm):
 
 
 class RejectForm(FlaskForm):
-    app_id = IntegerField(label="Application id")
     comment = TextAreaField(label="Reason for rejection")
     submit = SubmitField(label="Confirm")

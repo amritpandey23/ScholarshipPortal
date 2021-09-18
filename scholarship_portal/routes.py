@@ -1,6 +1,6 @@
 import datetime
-from flask import render_template, flash, redirect, url_for, request
-from flask.helpers import url_for
+from flask import render_template, flash, redirect, url_for, request, send_file
+from flask.helpers import send_file, url_for
 from werkzeug.utils import redirect, secure_filename
 from scholarship_portal import app
 from scholarship_portal.forms import (
@@ -172,7 +172,7 @@ def login_student():
             flash(f"Welcome {stud.name}!", "success")
             return redirect(next_page) if next_page else redirect(url_for("home"))
         else:
-            flash("Login Unsuccessful, please check email and password.")
+            flash("Login Unsuccessful, please check email and password.", "danger")
 
     return render_template("studentlogin.html", form=form, title="Student Login")
 
@@ -228,7 +228,7 @@ def approve(app_id):
 def reject(app_id):
     form = RejectForm()
     if form.validate_on_submit():
-        app = Application.query.filter_by(id=form.app_id.data)
+        app = Application.query.filter_by(id=int(app_id)).first()
         if app:
             app.comment = form.comment.data
             app.status = True
@@ -242,3 +242,9 @@ def reject(app_id):
             flash(f"Application successfully rejected.", "info")
             return redirect(url_for("approvaltab"))
     return render_template("rejection.html", app_id=app_id, form=form, title=f"Reject {app_id}")
+
+
+@app.route("/download/<filename>", methods=["GET"])
+@login_required
+def download(filename):
+    return send_file(os.path.join(app.config["UPLOAD_FOLDER"], filename), as_attachment=True)

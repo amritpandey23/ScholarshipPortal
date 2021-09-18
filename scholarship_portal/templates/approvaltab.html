@@ -11,7 +11,7 @@
       </li>
       {% for doc in docs %} {% if doc.app_id == app.id %}
       <li>
-        <a href="#">{{ doc.filename }}</a>
+        <a href="{{ url_for('download', filename=doc.filename) }}" target="_blank">{{ doc.filename }}</a>
       </li>
       {% endif %} {%endfor %}
     </ul>

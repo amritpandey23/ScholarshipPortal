@@ -5,9 +5,18 @@
     <div class="ms-2 me-auto">
       ticket number : {{ app.id }} <br />
       name : {{ app.app_name }} <br />
-      status : {% if app.status %} verified {%else %} pending {%endif%}<br />
+      status : {% if app.status %} 
+      {% if app.comment %}
+      rejected
+      {% else %}
+      accepted
+      {%endif%}
+      {% else %}
+      pending
+      {%endif%}<br />
+      {% if app.comment %} Comment : {{ app.comment }} {%endif %}
     </div>
-    {% if app.comment %} Comment : {{ app.comment }} {%endif %}
+    
   </li>
   {% endfor %}
 </ol>
