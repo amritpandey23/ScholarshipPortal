@@ -17,6 +17,7 @@ class Student(UserMixin, db.Model):
     caste = db.Column(db.String(15), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     department = db.Column(db.String(10), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
     cgpa = db.Column(db.Float)
     applications = db.relationship("Application", backref="candidate")
 
@@ -30,6 +31,7 @@ class Application(db.Model):
     app_name = db.Column(db.String(120), nullable=False)
     stud_roll_no = db.Column(db.Integer, db.ForeignKey("student.roll_no"))
     status = db.Column(db.Boolean, nullable=False, default=False)
+    comment = db.Column(db.Text, nullable=True)
     documents = db.relationship("Document", backref="attachment", lazy=True)
 
     def __repr__(self) -> str:
@@ -56,9 +58,6 @@ class Scholarship(db.Model):
     gender = db.Column(db.String(10), nullable=False)
     program = db.Column(db.String(10), nullable=False)
     department = db.Column(db.String(10), nullable=False)
-    requires_caste_cert = db.Column(db.Boolean, default=False)
-    requires_income_cert = db.Column(db.Boolean, default=False)
-    requires_resident_cert = db.Column(db.Boolean, default=False)
     requires_other_doc = db.Column(db.Boolean, default=False)
     required_cgpa = db.Column(db.Float)
     external_link = db.Column(db.String(240))
@@ -67,11 +66,3 @@ class Scholarship(db.Model):
         return f"Scholarship(name : {self.name})"
 
 
-class AdminUser(db.Model):
-    __tablename__ = "adminuser"
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(60), nullable=False)
-    password = db.Column(db.String(250), nullable=False)
-
-    def __repr__(self):
-        return f"AdminUser(email : {self.email})"

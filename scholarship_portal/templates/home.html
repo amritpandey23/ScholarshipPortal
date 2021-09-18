@@ -11,6 +11,9 @@
           {{ sch.description }}
       </p>
       <p>
+        <b>Closing Date : </b> {{sch.closing_date}}
+      </p>
+      <p>
         <b>Eligibility</b>
         <ul>
           <li>Program : {{ sch.program }}</li>
@@ -20,7 +23,11 @@
           <li>Min CGPA : {{ sch.required_cgpa }}</li>
         </ul>
       </p>
-    <a href="{{ url_for('apply_scholarship', sch_slug=sch.slug) }}" class="btn btn-primary btn-sm">Apply</a>
+    {% if sch.external_link %}
+      <a href="https://{{ sch.external_link }}" class="btn btn-primary btn-sm" target="_blank">Apply Externally &#x2197;</a>
+    {%else%}
+      <a href="{{ url_for('apply_scholarship', sch_slug=sch.slug) }}" class="btn btn-primary btn-sm">Apply</a>
+    {%endif%}
   </div>
 </div>
 {% endfor %}

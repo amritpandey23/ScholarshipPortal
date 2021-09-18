@@ -5,7 +5,7 @@ from wtforms import (
     TextAreaField,
     SelectField,
     FloatField,
-    MultipleFileField
+    MultipleFileField,
 )
 from wtforms.fields.html5 import DateField
 from wtforms.fields.core import BooleanField, IntegerField
@@ -21,7 +21,12 @@ caste_list = [
     ("ews", "EWS"),
 ]
 
-gender_list = [("null", "select"),("male", "MALE"), ("female", "FEMALE"), ("other", "OTHER")]
+gender_list = [
+    ("null", "select"),
+    ("male", "MALE"),
+    ("female", "FEMALE"),
+    ("other", "OTHER"),
+]
 
 department_list = [
     ("null", "select"),
@@ -78,7 +83,9 @@ class StudentRegistrationForm(FlaskForm):
     name = StringField(label="Name")
     email = StringField(label="Email", validators=[Email()])
     password = PasswordField(label="Password")
-    confirm_password = PasswordField(label="Confirm Password", validators=[EqualTo("password")])
+    confirm_password = PasswordField(
+        label="Confirm Password", validators=[EqualTo("password")]
+    )
     program = SelectField(label="Select Branch", choices=program_list)
     department = SelectField(label="Select Department", choices=department_list)
     caste = SelectField(label="Caste", choices=caste_list)
@@ -91,3 +98,9 @@ class StudentLoginForm(FlaskForm):
     email = StringField(label="Email")
     password = PasswordField(label="Password")
     submit = SubmitField(label="Login")
+
+
+class RejectForm(FlaskForm):
+    app_id = IntegerField(label="Application id")
+    comment = TextAreaField(label="Reason for rejection")
+    submit = SubmitField(label="Confirm")

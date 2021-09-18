@@ -1,3 +1,4 @@
+import datetime
 from flask import render_template, flash, redirect, url_for, request
 from flask.helpers import url_for
 from werkzeug.utils import redirect, secure_filename
@@ -7,17 +8,20 @@ from scholarship_portal.forms import (
     ApplicationForm,
     StudentLoginForm,
     StudentRegistrationForm,
+    RejectForm,
 )
 from scholarship_portal.models import Scholarship, Student, Application, Document
 from scholarship_portal import db, bcrypt
 from slugify import slugify
 from flask_login import current_user, login_user, logout_user, login_required
 import os
+from flask_sqlalchemy import functools
+from datetime import date
 
 
 @app.route("/")
 def home():
-    scholarships = Scholarship.query.all()
+    scholarships = Scholarship.query.order_by(Scholarship.closing_date).all()
     return render_template("home.html", data=scholarships, title="All Scholarship")
 
 
@@ -37,9 +41,6 @@ def new_scholarship():
             program=form.program.data,
             department=form.department.data,
             required_cgpa=form.required_cgpa.data,
-            requires_caste_cert=form.requires_caste_cert.data,
-            requires_income_cert=form.requires_income_cert.data,
-            requires_resident_cert=form.requires_resident_cert.data,
             requires_other_doc=form.requires_other_doc.data,
             external_link=form.external_link.data,
         )
@@ -63,6 +64,17 @@ def new_scholarship():
 @login_required
 def apply_scholarship(sch_slug):
     sch = Scholarship.query.filter_by(slug=sch_slug).first()
+    if datetime.datetime.combine(date.today(), datetime.time()) > sch.closing_date:
+        flash(f"You've missed the deadline!", "danger")
+        return redirect(url_for("home"))
+    apps = (
+        Application.query.filter_by(app_name=sch.name)
+        .filter_by(stud_roll_no=int(current_user.roll_no))
+        .first()
+    )
+    if apps:
+        flash(f"You have already applied for {sch.name} scholarship", "warning")
+        return redirect(url_for("home"))
     form = ApplicationForm()
     stud = current_user
     if (
@@ -118,6 +130,10 @@ def apply_scholarship(sch_slug):
 def register_student():
     form = StudentRegistrationForm()
     if form.validate_on_submit():
+        stud = Student.query.filter_by(roll_no=int(form.roll_no.data)).first()
+        if stud:
+            flash(f"Student with roll number {stud.roll_no} is already registered!", "danger")
+            return redirect(url_for("login_student"))
         student = Student(
             roll_no=form.roll_no.data,
             name=form.name.data,
@@ -138,7 +154,7 @@ def register_student():
             return render_template("studentreg.html", form=form, title="Register")
 
         flash("Student added successfully!", "success")
-        return redirect(url_for("home"))
+        return redirect(url_for("login_student"))
     return render_template("studentreg.html", form=form, title="Register")
 
 
@@ -180,3 +196,34 @@ def track():
     if len(apps) == 0:
         flash(f"No applications found.", "warning")
     return render_template("trackapp.html", data=apps, title="Track Application")
+
+
+@app.route("/approvaltab", methods=["GET"])
+def approvaltab():
+    apps = Application.query.all()
+    docs = Document.query.all()
+    return render_template(
+        "approvaltab.html", data=apps, docs=docs, title="Approve Applications"
+    )
+
+
+@app.route("/approve/<app_id>", methods=["GET"])
+def approve(app_id):
+    app = Application.query.filter_by(id=app_id).first()
+    app.status = True
+    try:
+        db.session.add(app)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        flash(f"some error occured while approving", "danger")
+        return redirect(url_for("approvaltab"))
+    flash(f"{app_id} approved successfully", "success")
+    return redirect(url_for("approvaltab"))
+
+
+@app.route("/reject/<app_id>", methods=["GET", "POST"])
+def reject(app_id):
+    form = RejectForm()
+    return render_template("rejection.html", form=form, title=f"Reject {app_id}")
