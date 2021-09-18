@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block content %}
+<ol class="list-group list-group-numbered">
+  {% for app in data %}
+  <li class="list-group-item d-flex justify-content-between align-items-start">
+    <div class="ms-2 me-auto">
+      ticket number : {{ app.id }} <br>
+      name : {{ app.app_name }} <br>
+      status : 
+      {% if app.status %}
+        verified
+    {%else %}
+    pending
+    {%endif%}<br>
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+{% endblock %}

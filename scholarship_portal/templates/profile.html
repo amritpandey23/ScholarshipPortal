@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="mx-auto col-md-6 my-3">
+    Name : {{ current_user.name }} <br>
+    Roll no: {{ current_user.roll_no }}<br>
+    Email : {{ current_user.email }} <br>
+    gender : {{ current_user.gender }} <br>
+    caste : {{ current_user.caste }} <br>
+    department : {{ current_user.department }} <br>
+    program : {{ current_user.program }} <br>
+</div>
+{% endblock %}

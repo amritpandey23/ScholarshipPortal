@@ -5,6 +5,7 @@ from wtforms import (
     TextAreaField,
     SelectField,
     FloatField,
+    MultipleFileField
 )
 from wtforms.fields.html5 import DateField
 from wtforms.fields.core import BooleanField, IntegerField
@@ -24,19 +25,19 @@ gender_list = [("null", "select"),("male", "MALE"), ("female", "FEMALE"), ("othe
 
 department_list = [
     ("null", "select"),
-    ("CSE", "CSE"),
-    ("ee", "EE"),
-    ("ce", "CE"),
-    ("ece", "ECE"),
-    ("me", "ME"),
+    ("Computer Science and Engineering", "CSE"),
+    ("Electrical Engineering", "EE"),
+    ("Civil Engineering", "CE"),
+    ("Electronics and Communication Engineering", "ECE"),
+    ("Mechanical Engineering", "ME"),
 ]
 
 program_list = [
     ("null", "select"),
-    ("mca", "MCA"),
-    ("btech", "BTECH"),
-    ("mtech", "MTECH"),
-    ("MSC", "MSC"),
+    ("MCA", "MCA"),
+    ("B.Tech", "BTECH"),
+    ("M.Tech", "MTECH"),
+    ("MSc.", "MSC"),
     ("Phd", "PHD"),
 ]
 
@@ -68,6 +69,7 @@ class ScholarshipForm(FlaskForm):
 class ApplicationForm(FlaskForm):
     name = StringField(label="Scholarship Name")
     stud_roll_no = IntegerField(label="Student Roll No")
+    files = MultipleFileField(label="Upload Files")
     submit = SubmitField(label="Apply")
 
 

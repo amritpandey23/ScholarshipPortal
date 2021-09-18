@@ -48,15 +48,15 @@
                 >Add Scholarship</a
               >
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('apply_scholarship') }}"
-                >Apply</a
-              >
-            </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="#"
+              <a class="nav-link" href="{{ url_for('track') }}"
                 >Track Application</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('profile') }}"
+                >Profile</a
               >
             </li>
             <li class="nav-item">

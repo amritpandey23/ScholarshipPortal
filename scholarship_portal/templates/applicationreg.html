@@ -1,10 +1,20 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block content %}
+<div class="mx-auto mt-5 col-md-6">
 
-{% block content %}
-<h1>Apply</h1>
-<form action="" method="POST">
-    {{ form.hidden_tag() }}
-    <div class="form-group col-md-6">
+<h3>{{ data.name }}</h3>
+<h3>Eligiblity</h3>
+<ul>
+  <li>Program : {{ data.program }}</li>
+  <li>Gender : {{ data.gender }}</li>
+  <li>Caste : {{ data.caste }}</li>
+  <li>Departement : {{data.department}}</li>
+  <li>Min CGPA : {{ data.required_cgpa }}</li>
+</ul>
+<h3>Instructions</h3>
+{{ data.instructions }}
+<form action="" method="POST" enctype = "multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
     {{ form.name.label(class="form-control-label") }} {% if form.name.errors %}
     {{ form.name(class="form-control is-invalid") }}
     <div class="invalid-feedback">
@@ -12,20 +22,34 @@
       <span>{{ error }}</span>
       {% endfor %}
     </div>
-    {% else %} {{ form.name(class="form-control") }} {% endif %}
+    {% else %} {{ form.name(class="form-control", value=data.name) }} {% endif %}
   </div>
 
-  <div class="form-group col-md-6">
-    {{ form.stud_roll_no.label(class="form-control-label") }} {% if form.stud_roll_no.errors %}
-    {{ form.stud_roll_no(class="form-control is-invalid") }}
+  <div class="form-group">
+    {{ form.stud_roll_no.label(class="form-control-label") }} {% if
+    form.stud_roll_no.errors %} {{ form.stud_roll_no(class="form-control
+    is-invalid") }}
     <div class="invalid-feedback">
       {% for error in form.stud_roll_no.errors %}
       <span>{{ error }}</span>
       {% endfor %}
     </div>
-    {% else %} {{ form.stud_roll_no(class="form-control") }} {% endif %}
+    {% else %} {{ form.stud_roll_no(class="form-control", value=current_user.roll_no) }} {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.files.label(class="form-control-label") }} {% if
+    form.files.errors %} {{ form.files(class="form-control
+    is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.files.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %} {{ form.files(class="form-control") }} {% endif %}
   </div>
 
   <div class="form-group">{{ form.submit(class="mt-3 btn btn-primary") }}</div>
 </form>
+</div>
 {% endblock %}

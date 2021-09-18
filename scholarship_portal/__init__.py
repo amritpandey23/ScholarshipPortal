@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 app.config["SECRET_KEY"] = _config["app_secret"]
 app.config["SQLALCHEMY_DATABASE_URI"] = _config["db_uri"]
+app.config["UPLOAD_FOLDER"] = _config["upload_folder"]
 
 
 bcrypt = Bcrypt(app)
@@ -18,7 +19,7 @@ bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
-login_manager.login_view = 'student_login'
+login_manager.login_view = 'login_student'
 login_manager.login_message_category = 'info'
 
 import scholarship_portal.routes
