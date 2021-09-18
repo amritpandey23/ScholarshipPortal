@@ -67,15 +67,15 @@ def apply_scholarship(sch_slug):
     if datetime.datetime.combine(date.today(), datetime.time()) > sch.closing_date:
         flash(f"You've missed the deadline!", "danger")
         return redirect(url_for("home"))
-    apps = (
+    app = (
         Application.query.filter_by(app_name=sch.name)
         .filter_by(stud_roll_no=int(current_user.roll_no))
-        .filter_by(status=False)
         .first()
     )
-    if apps:
-        flash(f"You have already applied for {sch.name} scholarship", "warning")
-        return redirect(url_for("home"))
+    if app:
+        if app.status == False or (app.status == True and not app.comment):
+            flash(f"You have already applied for {sch.name} scholarship", "warning")
+            return redirect(url_for("home"))
     form = ApplicationForm()
     stud = current_user
     if (
