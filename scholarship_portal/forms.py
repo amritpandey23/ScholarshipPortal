@@ -5,8 +5,8 @@ from wtforms import (
     TextAreaField,
     SelectField,
     FloatField,
-    DateField,
 )
+from wtforms.fields.html5 import DateField
 from wtforms.fields.core import IntegerField
 from wtforms.fields.simple import PasswordField
 from wtforms.validators import DataRequired, Length, Email, NumberRange

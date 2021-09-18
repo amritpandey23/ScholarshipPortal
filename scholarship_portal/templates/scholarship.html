@@ -1,0 +1,15 @@
+{% extends "layout.html" %} {% block content %}
+<div class="col-md-6 mx-auto mt-4">
+  <ul>
+    <li>Name : {{ data.name }}</li>
+    <li>Opening Date : {{ data.opening_date }}</li>
+    <li>Closing Date : {{ data.closing_date }}</li>
+    <li>Instructions : {{ data.description }}</li>
+    <li>Eligible Caste : {{ data.caste }}</li>
+    <li>Eligible Gender : {{ data.gender }}</li>
+    <li>Eligible Department : {{ data.department }}</li>
+    <li>Program : {{ data.program }}</li>
+    <li>Minimum CGPA : {{ data.required_cgpa }}</li>
+  </ul>
+</div>
+{% endblock %}

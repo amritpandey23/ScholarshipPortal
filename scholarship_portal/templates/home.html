@@ -1,4 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-
+<div class="scholarship-list col-md-6 mx-auto mt-4">
+    {% for sch in data %}
+<div class="card mb-4">
+  <div class="card-header">
+    {{ sch.name }}
+  </div>
+  <div class="card-body">
+      <ul>
+          <li>Opening Date : {{ sch.opening_date }}</li>
+          <li>Closing Date : {{ sch.closing_date }}</li>
+      </ul>
+      <p>
+          {{ sch.description }}
+      </p>
+    <a href="{{ url_for('scholarship_present', sch_slug=sch.slug) }}" class="btn btn-primary btn-sm">Learn More</a>
+  </div>
+</div>
+{% endfor %}
+</div>
 {% endblock %}
