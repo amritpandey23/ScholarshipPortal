@@ -15,13 +15,13 @@
       href="{{ url_for('static', filename='main.css') }}"
     />
     <title>
-      {% if title %} {{ title }} {% else %} Scholarship Portal {% endif %}
+      {% if title %} {{ title }} {% else %} Scholarship Portal{% endif %}
     </title>
   </head>
   <div class="wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="{{ url_for('home') }}">Scholarship Portal</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -35,14 +35,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                aria-current="page"
-                href="{{ url_for('home') }}"
-                >Home</a
-              >
-            </li>
             {% if current_user.is_authenticated and current_user.is_admin %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('new_scholarship') }}"

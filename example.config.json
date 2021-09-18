@@ -1,4 +1,6 @@
 {
     "app_secret" : "4740597831d388a8cec6b2e78ff3cec6",
-    "db_uri" : "sqlite:///site.db"
+    "db_uri" : "sqlite:///site.db",
+    "upload_folder": "/home/ape/Development/Devathon21/uploads",
+    "setup_complete": false
 }

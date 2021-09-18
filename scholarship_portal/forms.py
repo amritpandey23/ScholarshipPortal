@@ -63,10 +63,7 @@ class ScholarshipForm(FlaskForm):
             NumberRange(min=3, max=10, message="CGPA must be between 3 and 10")
         ],
     )
-    requires_caste_cert = BooleanField(label="Caste Certificate")
-    requires_income_cert = BooleanField(label="Income Certificate")
-    requires_resident_cert = BooleanField(label="Resident Certificate")
-    requires_other_doc = BooleanField(label="Other Document")
+    requires_other_doc = BooleanField(label="Extra Documents Required")
     external_link = StringField(label="External link for application (if any)")
     submit = SubmitField(label="Add Scholarship")
 

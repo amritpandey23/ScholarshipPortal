@@ -70,6 +70,7 @@ def apply_scholarship(sch_slug):
     apps = (
         Application.query.filter_by(app_name=sch.name)
         .filter_by(stud_roll_no=int(current_user.roll_no))
+        .filter_by(status=False)
         .first()
     )
     if apps:
@@ -226,4 +227,18 @@ def approve(app_id):
 @app.route("/reject/<app_id>", methods=["GET", "POST"])
 def reject(app_id):
     form = RejectForm()
-    return render_template("rejection.html", form=form, title=f"Reject {app_id}")
+    if form.validate_on_submit():
+        app = Application.query.filter_by(id=form.app_id.data)
+        if app:
+            app.comment = form.comment.data
+            app.status = True
+            try:
+                db.session.add(app)
+                db.session.commit()
+            except Exception as e:
+                print(e)
+                flash("some error in database")
+                return redirect(url_for("approvaltab"))
+            flash(f"Application successfully rejected.", "info")
+            return redirect(url_for("approvaltab"))
+    return render_template("rejection.html", app_id=app_id, form=form, title=f"Reject {app_id}")

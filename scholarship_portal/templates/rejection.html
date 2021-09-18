@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block content %}
-<form action="">
+<form action="" method="POST">
   {{ form.hidden_tag() }}
   <div class="form-group col-md-6">
     {{ form.app_id.label(class="form-control-label") }} {% if form.app_id.errors
@@ -9,7 +9,7 @@
       <span>{{ error }}</span>
       {% endfor %}
     </div>
-    {% else %} {{ form.app_id(class="form-control") }} {% endif %}
+    {% else %} {{ form.app_id(class="form-control", value=app_id) }} {% endif %}
   </div>
 
   <div class="form-group col-md-6">
