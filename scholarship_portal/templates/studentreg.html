@@ -61,31 +61,30 @@
   </div>
 
   <div class="form-group col-md-6">
-    {{ form.branch.label(class="form-control-label") }} {% if form.branch.errors
-    %} {{ form.branch(class="form-control is-invalid") }}
+    {{ form.program.label(class="form-control-label") }} {% if form.program.errors
+    %} {{ form.program(class="form-control is-invalid") }}
     <div class="invalid-feedback">
-      {% for error in form.branch.errors %}
+      {% for error in form.program.errors %}
       <span>{{ error }}</span>
       {% endfor %}
     </div>
-    {% else %} {{ form.branch(class="form-control") }} {% endif %}
+    {% else %} {{ form.program(class="form-control") }} {% endif %}
+  </div>
+
+  <div class="form-group col-md-6">
+    {{ form.department.label(class="form-control-label") }} {% if form.department.errors
+    %} {{ form.department(class="form-control is-invalid") }}
+    <div class="invalid-feedback">
+      {% for error in form.department.errors %}
+      <span>{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% else %} {{ form.department(class="form-control") }} {% endif %}
   </div>
 
   <div class="form-group col-md-6">
     {{ form.caste.label(class="form-control-label") }} {% if
     form.caste.errors %} {{ form.caste(class="form-control is-invalid") }}
-    <div class="invalid-feedback">
-      {% for error in form.caste.errors %}
-      <span>{{ error }}</span>
-      {% endfor %}
-    </div>
-    {% else %} {{ form.caste(class="form-control") }} {% endif %}
-  </div>
-
-  <div class="form-group col-md-6">
-    {{ form.caste.label(class="form-control-label") }} {% if
-    form.caste.errors %} {{ form.caste(class="form-control
-    is-invalid") }}
     <div class="invalid-feedback">
       {% for error in form.caste.errors %}
       <span>{{ error }}</span>

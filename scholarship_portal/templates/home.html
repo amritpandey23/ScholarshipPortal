@@ -7,14 +7,10 @@
     {{ sch.name }}
   </div>
   <div class="card-body">
-      <ul>
-          <li>Opening Date : {{ sch.opening_date }}</li>
-          <li>Closing Date : {{ sch.closing_date }}</li>
-      </ul>
       <p>
           {{ sch.description }}
       </p>
-    <a href="{{ url_for('scholarship_present', sch_slug=sch.slug) }}" class="btn btn-primary btn-sm">Learn More</a>
+    <a href="{{ url_for('scholarship_present', sch_slug=sch.slug) }}" class="btn btn-primary btn-sm">Apply</a>
   </div>
 </div>
 {% endfor %}

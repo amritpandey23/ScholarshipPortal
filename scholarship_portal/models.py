@@ -1,14 +1,19 @@
-from scholarship_portal import db
+from scholarship_portal import db, login_manager
+from flask_login import UserMixin
 import datetime
 
+@login_manager.user_loader
+def load_user(stud_id):
+    return Student.query.get(int(stud_id))
 
-class Student(db.Model):
+class Student(UserMixin, db.Model):
     __tablename__ = "student"
-    roll_no = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    roll_no = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(60), nullable=False)
     password = db.Column(db.String(250), nullable=False)
-    branch = db.Column(db.String(8), nullable=False)
+    program = db.Column(db.String(8), nullable=False)
     caste = db.Column(db.String(15), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     department = db.Column(db.String(10), nullable=False)
@@ -46,10 +51,15 @@ class Scholarship(db.Model):
     closing_date = db.Column(db.DateTime, nullable=False)
     slug = db.Column(db.String(30), nullable=False)
     description = db.Column(db.Text, nullable=False)
+    instructions = db.Column(db.Text, nullable=False)
     caste = db.Column(db.String(15), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     program = db.Column(db.String(10), nullable=False)
     department = db.Column(db.String(10), nullable=False)
+    requires_caste_cert = db.Column(db.Boolean, default=False)
+    requires_income_cert = db.Column(db.Boolean, default=False)
+    requires_resident_cert = db.Column(db.Boolean, default=False)
+    requires_other_doc = db.Column(db.Boolean, default=False)
     required_cgpa = db.Column(db.Float)
     external_link = db.Column(db.String(240))
 

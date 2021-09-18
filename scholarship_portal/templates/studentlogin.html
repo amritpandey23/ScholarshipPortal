@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block content %}
 <h1>Student Login</h1>
-<form action="">
+<form action="" method="POST">
   {{ form.hidden_tag() }}
   <div class="form-group col-md-6">
     {{ form.email.label(class="form-control-label") }} {% if form.email.errors
