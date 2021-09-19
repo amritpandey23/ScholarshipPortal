@@ -6,7 +6,13 @@
       <li>Ticket Number : {{ app.id }}</li>
       <li>Student Roll No : {{ app.stud_roll_no}}</li>
       <li>
-        Status : status : {% if app.status %} verified {%else %} pending
+        Status : status : {% if app.status %} 
+        {% if app.comment %}
+        rejected
+        {% else %}
+        verified
+        {%endif%}
+        {%else %} pending
         {%endif%}
       </li>
       {% for doc in docs %} {% if doc.app_id == app.id %}

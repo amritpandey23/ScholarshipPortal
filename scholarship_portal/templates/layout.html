@@ -21,7 +21,9 @@
   <div class="wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="{{ url_for('home') }}">Scholarship Portal</a>
+        <a class="navbar-brand" href="{{ url_for('home') }}"
+          >Scholarship Portal</a
+        >
         <button
           class="navbar-toggler"
           type="button"
@@ -37,6 +39,9 @@
           <ul class="navbar-nav">
             {% if current_user.is_authenticated and current_user.is_admin %}
             <li class="nav-item">
+              <a class="nav-link disabled">Admin Panel</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{{ url_for('new_scholarship') }}"
                 >Add Scholarship</a
               >
@@ -46,18 +51,17 @@
                 >Approve</a
               >
             </li>
-            {% endif %}
-            {% if current_user.is_authenticated %}
+            {% endif %} {% if current_user.is_authenticated %} {% if not
+            current_user.is_admin %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('track') }}"
                 >Track Application</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('profile') }}"
-                >Profile</a
-              >
+              <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
             </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('logout_student') }}"
                 >Logout</a

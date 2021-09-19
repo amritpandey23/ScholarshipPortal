@@ -13,7 +13,6 @@ app.config["SECRET_KEY"] = _config["app_secret"]
 app.config["SQLALCHEMY_DATABASE_URI"] = _config["db_uri"]
 app.config["UPLOAD_FOLDER"] = _config["upload_folder"]
 
-
 bcrypt = Bcrypt(app)
 
 db = SQLAlchemy(app)

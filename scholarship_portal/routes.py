@@ -15,7 +15,6 @@ from scholarship_portal import db, bcrypt
 from slugify import slugify
 from flask_login import current_user, login_user, logout_user, login_required
 import os
-from flask_sqlalchemy import functools
 from datetime import date
 
 
@@ -26,7 +25,10 @@ def home():
 
 
 @app.route("/scholarship/new", methods=["GET", "POST"])
+@login_required
 def new_scholarship():
+    if not current_user.is_admin:
+        return redirect("home")
     form = ScholarshipForm()
     if form.validate_on_submit():
         sch = Scholarship(
@@ -67,13 +69,13 @@ def apply_scholarship(sch_slug):
     if datetime.datetime.combine(date.today(), datetime.time()) > sch.closing_date:
         flash(f"You've missed the deadline!", "danger")
         return redirect(url_for("home"))
-    app = (
+    application = (
         Application.query.filter_by(app_name=sch.name)
         .filter_by(stud_roll_no=int(current_user.roll_no))
         .first()
     )
-    if app:
-        if app.status == False or (app.status == True and not app.comment):
+    if application:
+        if application.status == False or (application.status == True and not application.comment):
             flash(f"You have already applied for {sch.name} scholarship", "warning")
             return redirect(url_for("home"))
     form = ApplicationForm()
@@ -94,6 +96,8 @@ def apply_scholarship(sch_slug):
             filenames = []
             for f in form.files.data:
                 fname = secure_filename(f.filename)
+                # f.save(os.path.join(app.config["UPLOAD_FOLDER"], fname))
+                print(os.path.join(app.config["UPLOAD_FOLDER"], fname))
                 f.save(os.path.join(app.config["UPLOAD_FOLDER"], fname))
                 filenames.append(fname)
             application = Application(
@@ -118,7 +122,7 @@ def apply_scholarship(sch_slug):
                     data=sch,
                 )
             flash(f"Application completed successfully.", "success")
-            return redirect(url_for("home"))
+            return redirect(url_for("track"))
         return render_template(
             "applicationreg.html", form=form, title=f"Apply for {sch.name}", data=sch
         )
@@ -200,7 +204,10 @@ def track():
 
 
 @app.route("/approvaltab", methods=["GET"])
+@login_required
 def approvaltab():
+    if not current_user.is_admin:
+        return redirect("home")
     apps = Application.query.all()
     docs = Document.query.all()
     return render_template(
@@ -209,7 +216,10 @@ def approvaltab():
 
 
 @app.route("/approve/<app_id>", methods=["GET"])
+@login_required
 def approve(app_id):
+    if not current_user.is_admin:
+        return redirect("home")
     app = Application.query.filter_by(id=app_id).first()
     app.status = True
     try:
@@ -225,7 +235,10 @@ def approve(app_id):
 
 
 @app.route("/reject/<app_id>", methods=["GET", "POST"])
+@login_required
 def reject(app_id):
+    if not current_user.is_admin:
+        return redirect("home")
     form = RejectForm()
     if form.validate_on_submit():
         app = Application.query.filter_by(id=int(app_id)).first()
