@@ -28,7 +28,7 @@ def home():
 @login_required
 def new_scholarship():
     if not current_user.is_admin:
-        return redirect("home")
+        return redirect(url_for("home"))
     form = ScholarshipForm()
     if form.validate_on_submit():
         sch = Scholarship(
@@ -66,6 +66,8 @@ def new_scholarship():
 @login_required
 def apply_scholarship(sch_slug):
     sch = Scholarship.query.filter_by(slug=sch_slug).first()
+    if not sch:
+        return redirect(url_for("home"))
     if datetime.datetime.combine(date.today(), datetime.time()) > sch.closing_date:
         flash(f"You've missed the deadline!", "danger")
         return redirect(url_for("home"))
@@ -75,7 +77,9 @@ def apply_scholarship(sch_slug):
         .first()
     )
     if application:
-        if application.status == False or (application.status == True and not application.comment):
+        if application.status == False or (
+            application.status == True and not application.comment
+        ):
             flash(f"You have already applied for {sch.name} scholarship", "warning")
             return redirect(url_for("home"))
     form = ApplicationForm()
@@ -96,8 +100,6 @@ def apply_scholarship(sch_slug):
             filenames = []
             for f in form.files.data:
                 fname = secure_filename(f.filename)
-                # f.save(os.path.join(app.config["UPLOAD_FOLDER"], fname))
-                print(os.path.join(app.config["UPLOAD_FOLDER"], fname))
                 f.save(os.path.join(app.config["UPLOAD_FOLDER"], fname))
                 filenames.append(fname)
             application = Application(
@@ -137,7 +139,10 @@ def register_student():
     if form.validate_on_submit():
         stud = Student.query.filter_by(roll_no=int(form.roll_no.data)).first()
         if stud:
-            flash(f"Student with roll number {stud.roll_no} is already registered!", "danger")
+            flash(
+                f"Student with roll number {stud.roll_no} is already registered!",
+                "danger",
+            )
             return redirect(url_for("login_student"))
         student = Student(
             roll_no=form.roll_no.data,
@@ -207,7 +212,7 @@ def track():
 @login_required
 def approvaltab():
     if not current_user.is_admin:
-        return redirect("home")
+        return redirect(url_for("home"))
     apps = Application.query.all()
     docs = Document.query.all()
     return render_template(
@@ -219,7 +224,7 @@ def approvaltab():
 @login_required
 def approve(app_id):
     if not current_user.is_admin:
-        return redirect("home")
+        return redirect(url_for("home"))
     app = Application.query.filter_by(id=app_id).first()
     app.status = True
     try:
@@ -238,7 +243,7 @@ def approve(app_id):
 @login_required
 def reject(app_id):
     if not current_user.is_admin:
-        return redirect("home")
+        return redirect(url_for("home"))
     form = RejectForm()
     if form.validate_on_submit():
         app = Application.query.filter_by(id=int(app_id)).first()
@@ -254,10 +259,14 @@ def reject(app_id):
                 return redirect(url_for("approvaltab"))
             flash(f"Application successfully rejected.", "info")
             return redirect(url_for("approvaltab"))
-    return render_template("rejection.html", app_id=app_id, form=form, title=f"Reject {app_id}")
+    return render_template(
+        "rejection.html", app_id=app_id, form=form, title=f"Reject {app_id}"
+    )
 
 
 @app.route("/download/<filename>", methods=["GET"])
 @login_required
 def download(filename):
-    return send_file(os.path.join(app.config["UPLOAD_FOLDER"], filename), as_attachment=True)
+    return send_file(
+        os.path.join(app.config["UPLOAD_FOLDER"], filename), as_attachment=True
+    )
