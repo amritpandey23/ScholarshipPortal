@@ -18,8 +18,12 @@ Problem Statement : WS3
 ## Architecture
 MVC
 
-## Total Time Taken
+## Stats
 18 hours (4 hours planning + 14 hours execution)
+
+Over 1800 lines of code
+
+Uncountable cups of :coffee: 
 
 ## Licence
 MIT
